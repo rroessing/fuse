@@ -64,10 +64,7 @@
     <camelContext id="amq-example-context"
         xmlns="http://camel.apache.org/schema/blueprint" xmlns:order="http://com.mycompany/examples/order">
         <!-- a route to generate a random order every 5th second -->
-        
-        
         <endpoint id="json_idoc_purchaseOrder" uri="dozer:json_idoc_purchaseOrder?sourceModel=orderrequest.OrderRequest&amp;targetModel=generated_1490874398211.ORDERS05&amp;marshalId=generated_1490874398211&amp;unmarshalId=orderrequestOrderRequest&amp;mappingFile=transformation.xml"/>
-        
         <dataFormats>
             <json id="orderrequest_v17OrderRequestv17" library="Jackson" unmarshalTypeName="orderrequest_v17.OrderRequestv17"/>
             <jaxb contextPath="rrn.org_ibx.schemas.idoc_1490772692945" id="rrnorg_ibxschemasidoc_1490772692945"/>
@@ -76,8 +73,6 @@
             <jaxb contextPath="generated_1490870155203" id="generated_1490870155203"/>
             <jaxb contextPath="generated_1490874398211" id="generated_1490874398211"/>
         </dataFormats>
-        
-        
         <route id="generate-order">
             <from id="timerToGenerateOrder" uri="timer:order?period=5000&amp;delay=2000&amp;fixedRate=true"/>
             <bean id="generateOrder" method="generateOrder" ref="orderGenerator"/>
