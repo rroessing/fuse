@@ -1,64 +1,126 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
-    <configuration>
-        <wildcard>false</wildcard>
-        <variables>
-            <variable name="currency">EU4</variable>
-            <variable name="ADD">ADD</variable>
-            <variable name="EUR">EUR</variable>
-            <variable name="ZOVS">ZOVS</variable>
-            <variable name="QUALF_005">005</variable>
-            <variable name="QUALF_006">006</variable>
-            <variable name="ORGID_10">ORGID_10</variable>
-            <variable name="iddat_002">002</variable>
-            <variable name="IDDAT_011">011</variable>
-            <variable name="IDDAT_012">012</variable>
-            <variable name="QUALF_007">QUALF_007</variable>
-            <variable name="ORGID_OC">ORGID_OC</variable>
-            <variable name="segment_1">1</variable>
-        </variables>
-    </configuration>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<configuration>
+		<wildcard>false</wildcard>
+		<variables>
+			<variable name="currency">EU4</variable>
+			<variable name="ACTION_ADD">ADD</variable>
+			<variable name="EUR">EUR</variable>
+			<variable name="ZOVS">ZOVS</variable>
+			<variable name="QUALF_005">005</variable>
+			<variable name="QUALF_006">006</variable>
+			<variable name="ORGID_10">ORGID_10</variable>
+			<variable name="iddat_002">002</variable>
+			<variable name="IDDAT_011">011</variable>
+			<variable name="IDDAT_012">012</variable>
+			<variable name="QUALF_007">QUALF_007</variable>
+			<variable name="ORGID_OC">ORGID_OC</variable>
+			<variable name="segment_1">1</variable>
+		</variables>
+	</configuration>
 
 
-    
-    <mapping>
-    <class-a>orderrequest.OrderRequest</class-a>
-    <class-b>generated_1490874398211.ORDERS05</class-b>
-    <field>
-    <a>generationID</a>
-    <b>IDOC.E1EDK14[0].qualf</b>
-    <b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
-    </field>
-    
-    </mapping>
-    
-    
-    
-    <mapping>
-        <class-a>org.apache.camel.component.dozer.VariableMapper</class-a>
-        <class-b>generated_1490874398211.ORDERS05</class-b>
-        <field custom-converter-id="_variableMapping" custom-converter-param="${segment_1}">
-            <a>literal</a>
-            <b>idoc.begin</b>
-        </field>
-        
-       <field custom-converter-id="_variableMapping" custom-converter-param="${segment_1}">
-            <a>literal</a>
-            <b>IDOC.E1EDK14[0].orgid</b>
-        </field>
-        
-    </mapping>
-   
-    
-    
-    <!-- 
-    <mapping>
-        <class-a>org.apache.camel.component.dozer.ExpressionMapper</class-a>
-        <class-b>generated_1490874398211.ORDERS05</class-b>
-        <field custom-converter-id="_expressionMapping" custom-converter-param="groovy:resource:classpath:BuildList.groovy">
-            <a>expression</a>
-            <b>idoc.e1EDK14</b>
-        </field>
-    </mapping>
-     -->
+
+	<mapping>
+		<class-a>orderrequest.OrderRequest</class-a>
+		<class-b>generated_1490874398211.ORDERS05</class-b>
+
+		
+		
+
+
+		<field custom-converter-id="_customMapping"
+			custom-converter-param="com.mgm.efooddemo.mapping.DelieryModeToVsartMapping,map">
+			<a>deliveryMode</a>
+			<b>IDOC.e1EDK01.vsart</b>
+		</field>
+
+
+		<field custom-converter-id="_customMapping"
+			custom-converter-param="com.mgm.efooddemo.mapping.PaymentModeToZtermMapping,map">
+			<a>paymentMode</a>
+			<b>IDOC.e1EDK01.zterm</b>
+		</field>
+
+		<field>
+			<a>generationID</a>
+			<b>IDOC.e1EDK01.belnr</b>
+		</field>
+
+		<field custom-converter-id="_customMapping"
+			custom-converter-param="com.mgm.efooddemo.mapping.DelieryModeToVsartMapping,map">
+			<a>deliveryMode</a>
+			<b>IDOC.e1EDK01.vsart</b>
+		</field>
+	
+		<!-- E1EDK14 -->
+		<field custom-converter-id="_customMapping"
+			custom-converter-param="com.mgm.efooddemo.mapping.Transformations,stripNonNumericParts">
+			<a>warehouseCode</a>
+			<b>IDOC.E1EDK14[0].orgid</b>
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+		</field>
+	
+
+	</mapping>
+
+
+
+	<mapping>
+		<class-a>org.apache.camel.component.dozer.VariableMapper</class-a>
+		<class-b>generated_1490874398211.ORDERS05</class-b>
+		<field custom-converter-id="_variableMapping"
+			custom-converter-param="${segment_1}">
+			<a>literal</a>
+			<b>IDOC.begin</b>
+		</field>
+
+		<field custom-converter-id="_variableMapping"
+			custom-converter-param="${currency}">
+			<a>literal</a>
+			<b>IDOC.E1EDK01.curcy</b>
+		</field>
+		<field custom-converter-id="_variableMapping"
+			custom-converter-param="${ACTION_ADD}">
+			<a>literal</a>
+			<b>IDOC.E1EDK01.action</b>
+		</field>
+
+		<field custom-converter-id="_variableMapping"
+			custom-converter-param="${EUR}">
+			<a>literal</a>
+			<b>IDOC.E1EDK01.hwaer</b>
+		</field>
+
+
+		<!-- E1EDK14 -->
+		<field custom-converter-id="_variableMapping"
+			custom-converter-param="${QUALF_005}">
+			<a>literal</a>
+			<b>IDOC.E1EDK14[0].qualf</b>
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+		</field>
+
+		<field custom-converter-id="_variableMapping"
+			custom-converter-param="${QUALF_006}">
+			<a>literal</a>
+			<b>IDOC.E1EDK14[1].qualf</b>
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+		</field>
+			<field custom-converter-id="_variableMapping"
+			custom-converter-param="${ORGID_10}">
+			<a>literal</a>
+			<b>IDOC.E1EDK14[1].orgid</b>
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+		</field>
+
+	</mapping>
+
+
+
+	<!-- <mapping> <class-a>org.apache.camel.component.dozer.ExpressionMapper</class-a> 
+		<class-b>generated_1490874398211.ORDERS05</class-b> <field custom-converter-id="_expressionMapping" 
+		custom-converter-param="groovy:resource:classpath:BuildList.groovy"> <a>expression</a> 
+		<b>idoc.e1EDK14</b> </field> </mapping> -->
 </mappings>
