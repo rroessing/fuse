@@ -18,19 +18,22 @@
             <variable name="segment_1">1</variable>
         </variables>
     </configuration>
+
+
+    
     <mapping>
-        <class-a>orderrequest.OrderRequest</class-a>
-        <class-b>generated_1490874398211.ORDERS05</class-b>
+    <class-a>orderrequest.OrderRequest</class-a>
+    <class-b>generated_1490874398211.ORDERS05</class-b>
+    <field>
+    <a>generationID</a>
+    <b>IDOC.E1EDK14[0].qualf</b>
+    <b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+    </field>
+    
     </mapping>
-    <mapping>
-        <class-a>orderrequest.OrderRequest</class-a>
-        <class-b>generated_1490874398211.ORDERS05$IDOC</class-b>
-        <field>
-            <a>generationID</a>
-            <b>E1EDK14[0].qualf</b>
-            <b-deep-index-hint>generated_1490874398211.ORDERS05$IDOC$E1EDK14</b-deep-index-hint>
-        </field>
-    </mapping>
+    
+    
+    
     <mapping>
         <class-a>org.apache.camel.component.dozer.VariableMapper</class-a>
         <class-b>generated_1490874398211.ORDERS05</class-b>
@@ -38,6 +41,24 @@
             <a>literal</a>
             <b>idoc.begin</b>
         </field>
+        
+       <field custom-converter-id="_variableMapping" custom-converter-param="${segment_1}">
+            <a>literal</a>
+            <b>IDOC.E1EDK14[0].orgid</b>
+        </field>
+        
     </mapping>
-
+   
+    
+    
+    <!-- 
+    <mapping>
+        <class-a>org.apache.camel.component.dozer.ExpressionMapper</class-a>
+        <class-b>generated_1490874398211.ORDERS05</class-b>
+        <field custom-converter-id="_expressionMapping" custom-converter-param="groovy:resource:classpath:BuildList.groovy">
+            <a>expression</a>
+            <b>idoc.e1EDK14</b>
+        </field>
+    </mapping>
+     -->
 </mappings>
