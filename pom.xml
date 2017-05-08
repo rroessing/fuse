@@ -2,12 +2,12 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.mycompany</groupId>
-  <artifactId>camel-activemq-blueprint</artifactId>
+  <groupId>com.mgmtp.hybris.efooddemo.integration</groupId>
+  <artifactId>fuse-purchaseorder</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
-  <name>Fuse AMQ Quickstart - Blueprint</name>
-  <description>Camel AMQ Example using Blueprint</description>
+  <name>purchase order</name>
+  <description>mgm technology partners - efood demo - fuse purchase order</description>
   <properties>
     <maven-bundle-plugin.version>3.2.0</maven-bundle-plugin.version>
     <jboss.fuse.bom.version>6.3.0.redhat-187</jboss.fuse.bom.version>
