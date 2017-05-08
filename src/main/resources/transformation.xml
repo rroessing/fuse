@@ -4,19 +4,42 @@
 	<configuration>
 		<wildcard>false</wildcard>
 		<variables>
-			<variable name="currency">EU4</variable>
+			<variable name="CURRENCY">EU4</variable>
 			<variable name="ACTION_ADD">ADD</variable>
 			<variable name="EUR">EUR</variable>
 			<variable name="ZOVS">ZOVS</variable>
+			
+			<variable name="QUALF_001">001</variable>
 			<variable name="QUALF_005">005</variable>
 			<variable name="QUALF_006">006</variable>
-			<variable name="ORGID_10">ORGID_10</variable>
-			<variable name="iddat_002">002</variable>
+			<variable name="QUALF_007">007</variable>
+			<variable name="QUALF_008">008</variable>
+			<variable name="QUALF_007">009</variable>
+			<variable name="QUALF_011">011</variable>
+			<variable name="QUALF_012">012</variable>
+			<variable name="QUALF_019">019</variable>
+			
+			<variable name="ORGID_00">00</variable>
+			<variable name="ORGID_10">10</variable>
+			<variable name="ORGID_OC">OC</variable>
+			<variable name="ORGID_Z1">Z1</variable>
+			<variable name="ORGID_ZACS">ZACS</variable>
+			<variable name="ORGID_TA">TA</variable>
+			<variable name="ORGID_WEB">WEB</variable>
+			
+			
+			<variable name="IDDAT_002">002</variable>
 			<variable name="IDDAT_011">011</variable>
 			<variable name="IDDAT_012">012</variable>
-			<variable name="QUALF_007">QUALF_007</variable>
-			<variable name="ORGID_OC">ORGID_OC</variable>
-			<variable name="segment_1">1</variable>
+			
+			<variable name="IDTNR_002">002</variable>
+			
+			<variable name="PARVW_AG">AG</variable>		
+			<variable name="PARVW_WE">WE</variable>			
+			
+			<variable name="WERKS_ZP01">ZP01</variable>
+			
+			<variable name="SEGMENT_1">1</variable>
 		</variables>
 	</configuration>
 
@@ -26,12 +49,9 @@
 		<class-a>orderrequest.OrderRequest</class-a>
 		<class-b>generated_1490874398211.ORDERS05</class-b>
 
-		
-		
-
 
 		<field custom-converter-id="_customMapping"
-			custom-converter-param="com.mgm.efooddemo.mapping.DelieryModeToVsartMapping,map">
+			custom-converter-param="com.mgm.efooddemo.mapping.DelieryModeToVsartMapping,map"><!--  don't put space between "," and method name!  -->
 			<a>deliveryMode</a>
 			<b>IDOC.e1EDK01.vsart</b>
 		</field>
@@ -47,37 +67,138 @@
 			<a>generationID</a>
 			<b>IDOC.e1EDK01.belnr</b>
 		</field>
-
-		<field custom-converter-id="_customMapping"
-			custom-converter-param="com.mgm.efooddemo.mapping.DelieryModeToVsartMapping,map">
-			<a>deliveryMode</a>
-			<b>IDOC.e1EDK01.vsart</b>
-		</field>
 	
+
+
 		<!-- E1EDK14 -->
 		<field custom-converter-id="_customMapping"
 			custom-converter-param="com.mgm.efooddemo.mapping.Transformations,stripNonNumericParts">
 			<a>warehouseCode</a>
 			<b>IDOC.E1EDK14[0].orgid</b>
-			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+			
 		</field>
 	
+
+
+		<!-- E1EDK03 -->
+		<field custom-converter-id="_customMapping"
+			custom-converter-param="com.mgm.efooddemo.mapping.Transformations,currentDate">
+			<a>orderId</a>
+			<b>IDOC.E1EDK03[0].datum</b>
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK03</b-deep-index-hint>
+		</field>
+		<field 	custom-converter="com.mgm.efooddemo.mapping.ConstantCustomConverter"
+				custom-converter-param="${IDDAT_002}">
+			<a>orderId</a><!-- you need to provide existing field here, although not used at all... -->
+			<b>IDOC.E1EDK03[0].iddat</b>
+		</field>
+
+		<!-- E1EDKA1 -->
+		<field 	custom-converter="com.mgm.efooddemo.mapping.ConstantCustomConverter"
+				custom-converter-param="${PARVW_WE}">
+			<a>orderId</a>
+			<b>IDOC.E1EDKA1[0].parvw</b>
+		</field>
+		<!--  to  IDOC.E1EDKA1[0].partn see expression mappings !-->
+		<field>
+			<!-- car license plate  -->
+			<a >carID</a>
+			<b>IDOC.E1EDKA1[0].ihrez</b>
+		</field>
+			
+
+		<!-- E1EDK02  -->
+		<field custom-converter="com.mgm.efooddemo.mapping.ConstantCustomConverter"
+				custom-converter-param="${QUALF_001}">
+			<a >orderId</a>
+			<b>IDOC.E1EDK02[0].qualf</b>
+		</field>
+		<field>
+			<a>orderId</a>
+			<b>IDOC.E1EDK02[0].belnr</b>
+		</field>
+		
+		
+		<!-- ORDER ITEMS 
+			map the collection of entries to E1EDP01  
+			for mapping the entries itself, there's another mapping definition below! See "order items" comment!	
+		-->
+		
+		<field>
+			<a>entries</a>
+			<b>IDOC.E1EDP01</b>
+		</field>
+		
+		
 
 	</mapping>
 
 
+	
+	<!-- order items -->
+	<!-- E1EDP01 -->
+	<mapping>
+		<class-a>orderrequest.Entry</class-a>
+		<class-b>generated_1490874398211.ORDERS05.IDOC.E1EDP01</class-b>
+		<field>
+			<a>entryNumber</a>
+			<b>posex</b>
+		</field>
+		<field>
+			<a>quantity</a>
+			<b>menge</b>
+		</field>
+		<field 
+			custom-converter-id="_customMapping"
+			custom-converter-param="com.mgm.efooddemo.mapping.HybrisToSapMapping,mapQuantityUnit">
+			<a>entryUnitCode</a>
+			<b>menee</b>
+		</field>
+		
+		<field 
+			custom-converter="com.mgm.efooddemo.mapping.ConstantCustomConverter"
+			custom-converter-param="${WERKS_ZP01}">
+			<a>entryNumber</a><!-- you need to provide existing field here, although not used at all... -->
+			<b>werks</b>
+		</field>
+		
+		<field> 
+			<a>productCode</a>
+			<b>E1EDP19[0].idtnr</b>
+		</field>
+		<field 
+			custom-converter-id="_customMapping"
+			custom-converter-param="com.mgm.efooddemo.mapping.Transformations,cut70"> 
+			<a>articleName</a>
+			<b>E1EDP19[0].ktext</b>	
+		</field>
+		
+	</mapping>	
+
+
+
+
+<!--  
+	For mapping to variables (which are in fact constants) we need to declare VariableMapper as class a.
+	Therefore we can not put it just together with "normal" field maps or using custom converters.
+	
+	Probably less cluttered could be to just use a custom converter with an internal map instead!
+	I try this by using com.mgm.efooddemo.mapping.ConstantCustomConverter
+	
+	But I will leave in VariableMapper for for some parts where we don't have mixed dynamic/fix values for one segment.
+ -->
 
 	<mapping>
 		<class-a>org.apache.camel.component.dozer.VariableMapper</class-a>
 		<class-b>generated_1490874398211.ORDERS05</class-b>
 		<field custom-converter-id="_variableMapping"
-			custom-converter-param="${segment_1}">
+			custom-converter-param="${SEGMENT_1}">
 			<a>literal</a>
 			<b>IDOC.begin</b>
 		</field>
 
 		<field custom-converter-id="_variableMapping"
-			custom-converter-param="${currency}">
+			custom-converter-param="CURRENCY">
 			<a>literal</a>
 			<b>IDOC.E1EDK01.curcy</b>
 		</field>
@@ -95,27 +216,124 @@
 
 
 		<!-- E1EDK14 -->
+
 		<field custom-converter-id="_variableMapping"
-			custom-converter-param="${QUALF_005}">
+			custom-converter-param="${QUALF_006}">
 			<a>literal</a>
 			<b>IDOC.E1EDK14[0].qualf</b>
 			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
 		</field>
-
+			<field custom-converter-id="_variableMapping"
+			custom-converter-param="${ORGID_00}">
+			<a>literal</a>
+			<b>IDOC.E1EDK14[0].orgid</b>
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+		</field>
+		
 		<field custom-converter-id="_variableMapping"
-			custom-converter-param="${QUALF_006}">
+			custom-converter-param="${QUALF_007}">
 			<a>literal</a>
 			<b>IDOC.E1EDK14[1].qualf</b>
 			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
 		</field>
 			<field custom-converter-id="_variableMapping"
-			custom-converter-param="${ORGID_10}">
+			custom-converter-param="${ORGID_Z1}">
 			<a>literal</a>
 			<b>IDOC.E1EDK14[1].orgid</b>
 			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
 		</field>
 
+		<field custom-converter-id="_variableMapping"
+			custom-converter-param="${QUALF_008}">
+			<a>literal</a>
+			<b>IDOC.E1EDK14[2].qualf</b>
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+		</field>
+			<field custom-converter-id="_variableMapping"
+			custom-converter-param="${ORGID_ZACS}">
+			<a>literal</a>
+			<b>IDOC.E1EDK14[2].orgid</b>
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+		</field>
+
+		<field custom-converter-id="_variableMapping"
+			custom-converter-param="${QUALF_011}">
+			<a>literal</a>
+			<b>IDOC.E1EDK14[3].qualf</b>
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+		</field>
+			<field custom-converter-id="_variableMapping"
+			custom-converter-param="${ORGID_ZACS}">
+			<a>literal</a>
+			<b>IDOC.E1EDK14[3].orgid</b>
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+		</field>
+		
+		<field custom-converter-id="_variableMapping"
+			custom-converter-param="${QUALF_012}">
+			<a>literal</a>
+			<b>IDOC.E1EDK14[4].qualf</b>
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+		</field>
+			<field custom-converter-id="_variableMapping"
+			custom-converter-param="${ORGID_TA}">
+			<a>literal</a>
+			<b>IDOC.E1EDK14[4].orgid</b>
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+		</field>
+		
+		<field custom-converter-id="_variableMapping"
+			custom-converter-param="${QUALF_019}">
+			<a>literal</a>
+			<b>IDOC.E1EDK14[5].qualf</b>
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+		</field>
+		<field custom-converter-id="_variableMapping"
+			custom-converter-param="${ORGID_WEB}">
+			<a>literal</a>
+			<b>IDOC.E1EDK14[5].orgid</b>
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDK14</b-deep-index-hint>
+		</field>
+
 	</mapping>
+
+
+
+
+<!-- 
+	#######################################
+	### Expression mappings (holy cow!) ###
+	#######################################
+-->
+
+<!-- 
+	 We also have some mapping which are probably easiest to do using xpath expressions. Camel offers an mapping extension capable of using camel languages
+ 	 See http://camel.apache.org/languages.html
+ -->
+	<mapping> 
+		<class-a>org.apache.camel.component.dozer.ExpressionMapper</class-a> 
+		<class-b>generated_1490874398211.ORDERS05</class-b> 
+		<!-- Oh man, here i had some trouble...
+			1. you need to put dependency to camel-jxpath into your pom !!!!!
+				otherwise you're getting weird errors and don't know why...
+			2- you need to use /out/body to access the java object! "in" would by just the plain massage (json).
+			
+			I really wonder, why all those holy mother freakers out there don't publish ANY useful documentation on this topic, 
+			how to use dozer / language expressions properly with camel 	
+		
+		 -->
+		 <!-- E1EDKA1 -->		
+		<field 	custom-converter-id="_expressionMapping" 
+				custom-converter-param="jxpath:/out/body/partners[@partnerRoleCode='WE']/partnerCode"> 
+			<a>expression</a> 
+			<b>IDOC.E1EDKA1[0].partn</b> 
+			<b-deep-index-hint>generated_1490874398211.ORDERS05.IDOC.E1EDKA1</b-deep-index-hint>
+		</field> 
+
+
+
+	</mapping> 
+		
 
 
 

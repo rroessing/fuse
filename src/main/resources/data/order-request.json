@@ -6,6 +6,7 @@
 	"deliveryTimeTo": "2016-04-12T14:30:00+0200",
 	"deliveryTimeFrom": "2016-04-12T06:30:00+0200",
 	"warehouseCode": "DE8960",
+	"carID": "VIE RR 135",
 	"entries": [{
 		"quantity": 9,
 		"productCode": "9999902",

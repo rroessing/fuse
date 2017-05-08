@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
     xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
     xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
@@ -49,14 +48,6 @@
             <jaxb contextPath="generated_1490870155203" id="generated_1490870155203"/>
             <jaxb contextPath="generated_1490874398211" id="generated_1490874398211"/>
         </dataFormats>
-        <route id="generate-order">
-            <from id="timerToGenerateOrder" uri="timer:order?period=5000&amp;delay=2000&amp;fixedRate=true"/>
-            <bean id="generateOrder" method="generateOrder" ref="orderGenerator"/>
-            <setHeader headerName="Exchange.FILE_NAME" id="updateFileNameHeader">
-                <method method="generateFileName" ref="orderGenerator"/>
-            </setHeader>
-            <to id="initializerFolder" uri="file:work/in"/>
-        </route>
         <!--
           When this route is started, it will automatically create the work/jms/input 
           directory where you can drop thefile that need to be processed.
@@ -68,9 +59,9 @@
           to the JMS queue incomingOrders on the ActiveMQ broker.
         -->
         <route id="file-to-jms-route">
-            <from id="incomingFolder" uri="file:work/in"/>
+            <from id="incomingFolder" uri="file:work/in/hybris/order"/>
             <log id="logReceivingOrder" message="Receiving order ${file:name}"/>
-            <to id="sendIncomingOrder" uri="activemq:incomingOrders?username=${broker.userName}&amp;password=${broker.password}"/>
+            <to id="fileToQueueProcessOrder" uri="activemq:dynamicQueues/pub/outbound/order/processOrderTrg?username=${broker.userName}&amp;password=${broker.password}"/>
         </route>
         <!--
           This route consumes messages from the JMS queue incomingOrders on the 
@@ -83,29 +74,19 @@
           ensures that any file that does not meet the requirements for either of 
           the <when/> elements will be moved to the work/jms/output/others directory.
         -->
-        <route id="jms-cbr-route" streamCache="true">
-            <from id="listenToIncomingOrder" uri="activemq:incomingOrders?username=${broker.userName}&amp;password=${broker.password}"/>
-            <choice id="countrySelection">
-                <when id="UKCustomer">
-                    <xpath id="_xpath1">/order:order/order:customer/order:country = 'UK'</xpath>
-                    <log id="logUK" message="Sending order ${file:name} to the UK"/>
-                    <to id="outputUKFolder" uri="file:work/out/uk"/>
-                </when>
-                <when id="USCustomer">
-                    <xpath id="_xpath2">/order:order/order:customer/order:country = 'US'</xpath>
-                    <log id="logUS" message="Sending order ${file:name} to the US"/>
-                    <to id="outputUSFolder" uri="file:work/out/us"/>
-                </when>
-                <otherwise id="OtherCustomer">
-                    <log id="logOtherCountry" message="Sending order ${file:name} to another country"/>
-                    <to id="outputOtherCountryFolder" uri="file:work/out/others"/>
-                </otherwise>
-            </choice>
-            <log id="logEndProcessing" message="Done processing ${file:name}"/>
-        </route>
         <route id="hybris-sap-purchaseOrder-route">
             <from id="hybris-purchaseOrder-queue" uri="activemq:dynamicQueues/pub/outbound/order/processOrderTrg?username=${broker.userName}&amp;password=${broker.password}"/>
+            <wireTap id="inHybrisOrderWireTap" uri="file:work/intermediate/order/beforeTransformation">
+                <body>
+                    <simple trim="false">${body}</simple>
+                </body>
+            </wireTap>
             <to id="transform_purchaseOrder" uri="ref:json_idoc_purchaseOrder"/>
+            <wireTap id="outSapOrderWiretap" uri="file:work/intermediate/order/afterTransformation">
+                <body>
+                    <simple>${body}</simple>
+                </body>
+            </wireTap>
             <to id="jmsSapOrder" uri="file:work/out/sap/order"/>
         </route>
     </camelContext>

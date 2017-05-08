@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "deliveryTimeTo",
     "deliveryTimeFrom",
     "warehouseCode",
+    "carID",
     "entries",
     "deliveryMode",
     "partners",
@@ -41,6 +42,8 @@ public class OrderRequest {
     private String deliveryTimeFrom;
     @JsonProperty("warehouseCode")
     private String warehouseCode;
+    @JsonProperty("carID")
+    private String carId;
     @JsonProperty("entries")
     private List<Entry> entries = new ArrayList<Entry>();
     @JsonProperty("deliveryMode")
@@ -313,5 +316,21 @@ public class OrderRequest {
     public void setOrderCurrencyIsoCode(String orderCurrencyIsoCode) {
         this.orderCurrencyIsoCode = orderCurrencyIsoCode;
     }
+
+	/**
+	 * @return the carId
+	 */
+    @JsonProperty("carID")
+	public String getCarId() {
+		return carId;
+	}
+
+	/**
+	 * @param carId the carId to set
+	 */
+    @JsonProperty("carID")
+	public void setCarId(String carId) {
+		this.carId = carId;
+	}
 
 }
