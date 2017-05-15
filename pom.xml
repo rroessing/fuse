@@ -20,6 +20,21 @@
     <camel.version>2.17.0.redhat-630187</camel.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  
+  
+  
+  <distributionManagement>
+    <snapshotRepository>
+    	<id>${repoId}</id>
+    	<url>snapshotRepoUrl</url>
+    </snapshotRepository>
+    <repository>
+    	<id>${repoId}</id>
+    	<url>releaseRepoUrl</url>
+    </repository>
+  </distributionManagement>
+  
+  
   <dependencyManagement>
     <dependencies>
       <dependency>
