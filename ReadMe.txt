@@ -26,7 +26,7 @@ To run this project on JBoss Fuse shell :
 
     - install the bundle from Fuse shell
 
-      install -s mvn:com.mycompany/camel-activemq-blueprint/1.0.0-SNAPSHOT
+      install -s mvn:com.mgmtp.hybris.efooddemo.integration/PurchaseOrder/1.0.0-SNAPSHOT
 
 For more general help see the Apache Camel documentation
 

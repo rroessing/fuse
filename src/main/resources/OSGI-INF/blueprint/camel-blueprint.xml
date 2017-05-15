@@ -13,18 +13,19 @@
     <cm:property-placeholder id="camel.activemq.blueprint" persistent-id="camel.activemq.blueprint">
         <cm:default-properties>
             <cm:property name="broker.url" value="vm://amq?broker.persistent=false"/>
-            <cm:property name="broker.username" value="hybris"/>
-            <cm:property name="broker.password" value="hybris"/>
+            <cm:property name="broker.username" value="admin"/>
+            <cm:property name="broker.password" value="nimda"/>
         </cm:default-properties>
     </cm:property-placeholder>
-    <bean class="com.mycompany.templates.camel.activemq.OrderGenerator" id="orderGenerator"/>
     <!-- 
          Lets connect the Camel ActiveMQ component to the broker.
     -->
     <bean class="org.apache.activemq.camel.component.ActiveMQComponent" id="activemq">
         <property name="brokerURL" value="${broker.url}"/>
+        
         <property name="userName" value="${broker.username}"/>
         <property name="password" value="${broker.password}"/>
+        
         <property name="usePooledConnection" value="false"/>
     </bean>
     <!--
@@ -37,45 +38,21 @@
         (logging, JMX MBeans, ...)
     -->
     <camelContext id="amq-example-context"
-        xmlns="http://camel.apache.org/schema/blueprint" xmlns:order="http://com.mycompany/examples/order">
-        <!-- a route to generate a random order every 5th second -->
+        xmlns="http://camel.apache.org/schema/blueprint"
+        xmlns:order="http://com.mycompany/examples/order"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://camel.apache.org/schema/blueprint">
         <endpoint id="json_idoc_purchaseOrder" uri="dozer:json_idoc_purchaseOrder?sourceModel=orderrequest.OrderRequest&amp;targetModel=generated_1490874398211.ORDERS05&amp;marshalId=generated_1490874398211&amp;unmarshalId=orderrequestOrderRequest&amp;mappingFile=transformation.xml"/>
         <dataFormats>
-            <json id="orderrequest_v17OrderRequestv17" library="Jackson" unmarshalTypeName="orderrequest_v17.OrderRequestv17"/>
-            <jaxb contextPath="rrn.org_ibx.schemas.idoc_1490772692945" id="rrnorg_ibxschemasidoc_1490772692945"/>
             <json id="orderrequestOrderRequest" library="Jackson" unmarshalTypeName="orderrequest.OrderRequest"/>
-            <jaxb contextPath="rrn.org_ibx.schemas.idoc_1490773646810" id="rrnorg_ibxschemasidoc_1490773646810"/>
-            <jaxb contextPath="generated_1490870155203" id="generated_1490870155203"/>
             <jaxb contextPath="generated_1490874398211" id="generated_1490874398211"/>
         </dataFormats>
-        <!--
-          When this route is started, it will automatically create the work/jms/input 
-          directory where you can drop thefile that need to be processed.
-
-          The <log/> elements are used to add human-friendly business logging statements. 
-          They make it easier to see what the route is doing.
-
-          Files that are consumed from the work/jms/input directory, are then sent 
-          to the JMS queue incomingOrders on the ActiveMQ broker.
-        -->
         <route id="file-to-jms-route">
             <from id="incomingFolder" uri="file:work/in/hybris/order"/>
             <log id="logReceivingOrder" message="Receiving order ${file:name}"/>
-            <to id="fileToQueueProcessOrder" uri="activemq:dynamicQueues/pub/outbound/order/processOrderTrg?username=${broker.userName}&amp;password=${broker.password}"/>
+            <to id="fileToQueueProcessOrder" uri="activemq:dynamicQueues/pub/outbound/order/processOrderTrg"/>
         </route>
-        <!--
-          This route consumes messages from the JMS queue incomingOrders on the 
-          ActiveMQ broker within the ESB.
-
-          The <choice/> element contains the content based router. The two <when/> 
-          clauses use XPath to define the criteria for entering that part of the 
-          route. When the country in the XML message is set to UK or US, the file 
-          will be moved to a directory for that country. The <otherwise/> element 
-          ensures that any file that does not meet the requirements for either of 
-          the <when/> elements will be moved to the work/jms/output/others directory.
-        -->
         <route id="hybris-sap-purchaseOrder-route">
-            <from id="hybris-purchaseOrder-queue" uri="activemq:dynamicQueues/pub/outbound/order/processOrderTrg?username=${broker.userName}&amp;password=${broker.password}"/>
+            <from id="hybris-purchaseOrder-queue" uri="activemq:dynamicQueues/pub/outbound/order/processOrderTrg"/>
             <wireTap id="inHybrisOrderWireTap" uri="file:work/intermediate/order/beforeTransformation">
                 <body>
                     <simple trim="false">${body}</simple>

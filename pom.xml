@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mgmtp.hybris.efooddemo.integration</groupId>
-  <artifactId>fuse-purchaseorder</artifactId>
+  <artifactId>PurchaseOrder</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>purchase order</name>
@@ -212,10 +213,16 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Bundle-SymbolicName>PurchaseOrder</Bundle-SymbolicName>
-            <Bundle-Name>Camel AMQ Example using Blueprint [PurchaseOrder]</Bundle-Name>
-            <Import-Package>*,com.sun.el;version="[2,3)"</Import-Package>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+            <Bundle-Name>mgm efood - ${project.artifactId}</Bundle-Name>
+
+            <Import-Package>com.sun.el;version="[2,3)",*</Import-Package>
+            <Export-Package>com.mgm.efooddemo.mapping,generated_1490874398211,orderrequest</Export-Package>
+            <!--
+                <Export-Package>{local-packages}</Export-Package>
+             -->
           </instructions>
+          
         </configuration>
       </plugin>
       <plugin>

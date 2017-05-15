@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+<mappings xmlns="http://dozer.sourceforge.net"
+		  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		  xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
 	<configuration>
 		<wildcard>false</wildcard>
 		<variables>
@@ -128,8 +129,6 @@
 			<a>entries</a>
 			<b>IDOC.E1EDP01</b>
 		</field>
-		
-		
 
 	</mapping>
 
@@ -137,6 +136,7 @@
 	
 	<!-- order items -->
 	<!-- E1EDP01 -->
+	 
 	<mapping>
 		<class-a>orderrequest.Entry</class-a>
 		<class-b>generated_1490874398211.ORDERS05.IDOC.E1EDP01</class-b>
@@ -158,7 +158,7 @@
 		<field 
 			custom-converter="com.mgm.efooddemo.mapping.ConstantCustomConverter"
 			custom-converter-param="${WERKS_ZP01}">
-			<a>entryNumber</a><!-- you need to provide existing field here, although not used at all... -->
+			<a>entryNumber</a>
 			<b>werks</b>
 		</field>
 		
@@ -174,7 +174,10 @@
 		</field>
 		
 	</mapping>	
-
+ 
+ 
+ 
+ 
 
 
 
