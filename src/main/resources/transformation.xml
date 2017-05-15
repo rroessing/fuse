@@ -139,7 +139,7 @@
 	 
 	<mapping>
 		<class-a>orderrequest.Entry</class-a>
-		<class-b>generated_1490874398211.ORDERS05.IDOC.E1EDP01</class-b>
+		<class-b>generated_1490874398211.ORDERS05$IDOC$E1EDP01</class-b>
 		<field>
 			<a>entryNumber</a>
 			<b>posex</b>

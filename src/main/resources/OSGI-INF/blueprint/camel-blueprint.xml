@@ -22,10 +22,8 @@
     -->
     <bean class="org.apache.activemq.camel.component.ActiveMQComponent" id="activemq">
         <property name="brokerURL" value="${broker.url}"/>
-        
         <property name="userName" value="${broker.username}"/>
         <property name="password" value="${broker.password}"/>
-        
         <property name="usePooledConnection" value="false"/>
     </bean>
     <!--
@@ -41,11 +39,19 @@
         xmlns="http://camel.apache.org/schema/blueprint"
         xmlns:order="http://com.mycompany/examples/order"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://camel.apache.org/schema/blueprint">
+        
+        
         <endpoint id="json_idoc_purchaseOrder" uri="dozer:json_idoc_purchaseOrder?sourceModel=orderrequest.OrderRequest&amp;targetModel=generated_1490874398211.ORDERS05&amp;marshalId=generated_1490874398211&amp;unmarshalId=orderrequestOrderRequest&amp;mappingFile=transformation.xml"/>
+        
+        
+        
+        
         <dataFormats>
             <json id="orderrequestOrderRequest" library="Jackson" unmarshalTypeName="orderrequest.OrderRequest"/>
             <jaxb contextPath="generated_1490874398211" id="generated_1490874398211"/>
         </dataFormats>
+        
+        
         <route id="file-to-jms-route">
             <from id="incomingFolder" uri="file:work/in/hybris/order"/>
             <log id="logReceivingOrder" message="Receiving order ${file:name}"/>
